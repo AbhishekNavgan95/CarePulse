@@ -154,11 +154,9 @@ const RenderField = ({ field, props }: { field: any; props: CustomProps }) => {
               checked={field.value}
               onCheckedChange={field.onChange}
             />
-            <Label className="checkbox-label" htmlFor={props.name} >
-              {
-                props.label
-              }
-            </Label> 
+            <Label className="checkbox-label" htmlFor={props.name}>
+              {props.label}
+            </Label>
           </div>
         </FormControl>
       );

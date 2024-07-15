@@ -1,8 +1,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import StatusBatdge from "../StatusBatdge";
 import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "@/constants";

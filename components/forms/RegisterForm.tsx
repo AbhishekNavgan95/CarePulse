@@ -55,21 +55,19 @@ const RegisterForm = ({ user }: { user: User }) => {
     }
 
     try {
-
       const patientData = {
         ...values,
         userId: user.$id,
         birthDate: new Date(values.birthDate),
         identificationDocument: formData,
-      }
+      };
 
       // @ts-ignore
-      const patient = await registerPatient(patientData)
+      const patient = await registerPatient(patientData);
 
-      if(patient) {
-        router.push(`/patients/${user.$id}/new-appointment`)
+      if (patient) {
+        router.push(`/patients/${user.$id}/new-appointment`);
       }
-
     } catch (error) {
       console.log("error: ", error);
     }

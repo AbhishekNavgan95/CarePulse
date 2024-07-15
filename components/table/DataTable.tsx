@@ -1,13 +1,17 @@
 "use client";
 
 import {
+  getPaginationRowModel,
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
 } from "@tanstack/react-table";
+import Image from "next/image";
+import { redirect } from "next/navigation";
+import { useEffect } from "react";
 
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -16,8 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Button } from "../ui/button";
-import Image from "next/image";
+import { decryptKey } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -28,18 +31,30 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const encryptedKey =
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("accessKey")
+      : null;
+
+  useEffect(() => {
+    const accessKey = encryptedKey && decryptKey(encryptedKey);
+
+    if (accessKey !== process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
+      redirect("/");
+    }
+  }, [encryptedKey]);
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-  })
+  });
 
   return (
     <div className="data-table">
       <Table className="shad-table">
-        <TableHeader className="bg-dark-200">
+        <TableHeader className=" bg-dark-200">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id} className="shad-table-row-header">
               {headerGroup.headers.map((header) => {
@@ -58,9 +73,13 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table?.getRowModel() && table.getRowModel()?.rows?.length ? ( // the runtime error is occuring at this like saying cannot read properties of undefined reading length but I have copied this code from the official documentation and it should not behave like this 
-            table?.getRowModel()?.rows?.map((row) => (
-              <TableRow className="shad-table-row" key={row.id}>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+                className="shad-table-row"
+              >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -78,7 +97,6 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
       <div className="table-actions">
-        
         <Button
           variant="outline"
           size="sm"
@@ -88,27 +106,26 @@ export function DataTable<TData, TValue>({
         >
           <Image
             src="/assets/icons/arrow.svg"
-            alt="arrow"
             width={24}
             height={24}
+            alt="arrow"
           />
         </Button>
-
         <Button
           variant="outline"
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
-          className="shad-gray-btn rotate-180"
+          className="shad-gray-btn"
         >
           <Image
             src="/assets/icons/arrow.svg"
-            alt="arrow"
             width={24}
             height={24}
+            alt="arrow "
+            className="rotate-180"
           />
         </Button>
-
       </div>
     </div>
   );

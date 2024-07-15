@@ -88,6 +88,9 @@ const PasskeyModal = () => {
           <AlertDialogDescription>
             To access the a admin panel, please enter the passkey
           </AlertDialogDescription>
+          <AlertDialogDescription>
+            Demo passkey - 123456
+          </AlertDialogDescription>
         </AlertDialogHeader>
 
         <div className="">

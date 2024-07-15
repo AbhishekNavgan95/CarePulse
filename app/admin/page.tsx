@@ -1,21 +1,13 @@
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 import { columns } from "@/components/table/Columns";
 import { DataTable } from "@/components/table/DataTable";
 import StatCard from "@/components/ui/StatCard";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
-import { Appointment } from "@/types/appwrite.types";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
-
-interface Appointments {
-  scheduledCount: number;
-  pendingCount: number;
-  cancelledCount: number;
-  document: Appointment[];
-}
 
 const Admin = async () => {
-  const appointments = await getRecentAppointmentList();
+      const appointments = await getRecentAppointmentList();
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
