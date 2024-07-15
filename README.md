@@ -46,6 +46,7 @@ CarePulse uses a variety of modern web technologies and libraries, including but
 - Radix UI for accessible UI components.
 - React Hook Form for form management.
 - Zod for schema validation.
+- TypeScript for static type checking.
 
 For a complete list of dependencies, please take a look at the package.json file.
 
